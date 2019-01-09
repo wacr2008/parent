@@ -280,6 +280,8 @@ public class GoodsServiceImpl implements GoodsService {
             Item item = new Item();
             //设置库存标题
             item.setTitle(goodsEntity.getGoods().getGoodsName());
+            //设置卖家id
+            item.setSellerId(goodsEntity.getGoods().getSellerId());
             //设置规格
             item.setSpec("{}");
             //设置默认库存量
