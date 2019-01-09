@@ -19,7 +19,7 @@ public class UserController {
     @RequestMapping("/sendCode")
     public Result sendCode(String phone) {
         try {
-
+            System.out.println();
             if (phone == null || "".equals(phone) || phone.length() != 11) {
                 return new Result(false, "请输入正确的手机号!!!");
             }
