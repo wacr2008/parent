@@ -118,7 +118,6 @@ public class OrderServiceImpl implements OrderService {
         PayLog payLog = (PayLog)redisTemplate.boundHashOps("payLog").get(userName);
         return payLog;
     }
-
     @Override
     public void updatePayStatus(String userName) {
         //1. 根据用户名获取redis中的支付日志对象
@@ -127,7 +126,6 @@ public class OrderServiceImpl implements OrderService {
         if (payLog != null) {
             //2. 更改支付日志表中的支付状态为已支付
             payLog.setTradeState("1");
-            payLog.setPayType(String.valueOf(new Date()));
             payLogDao.updateByPrimaryKeySelective(payLog);
 
             //3. 更改订单表中的支付状态
@@ -146,4 +144,5 @@ public class OrderServiceImpl implements OrderService {
             redisTemplate.boundHashOps("payLog").delete(userName);
         }
     }
+
 }
