@@ -267,7 +267,8 @@ public class GoodsServiceImpl implements GoodsService {
                     }
                     //拼接完后里面的数据是  iphone8 16G 联通3G
                     item.setTitle(title);
-
+                    //设置卖家id
+                    item.setSellerId(goodsEntity.getGoods().getSellerId());
                     //设置item对象属性值
                     setItemValue(goodsEntity, item);
 
