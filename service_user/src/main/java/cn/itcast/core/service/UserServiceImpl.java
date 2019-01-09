@@ -1,6 +1,7 @@
 package cn.itcast.core.service;
 
 import cn.itcast.core.dao.user.UserDao;
+import cn.itcast.core.pojo.entity.PageResult;
 import cn.itcast.core.pojo.user.User;
 import com.alibaba.dubbo.config.annotation.Service;
 import org.apache.activemq.command.ActiveMQQueue;
@@ -72,6 +73,15 @@ public class UserServiceImpl implements UserService {
     public void add(User user) {
         userDao.insertSelective(user);
 
+    }
+
+    /**
+     * 用户分页查询
+     * @return
+     */
+    @Override
+    public PageResult search() {
+        return null;
     }
 
     /**
