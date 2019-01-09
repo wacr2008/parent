@@ -22,6 +22,7 @@ public class brandController {
     public List brandFindAll(){
 
          List<Brand> brands = brandService.brandFindAll();
+         System.out.println("868686");
          return brands;
      }
 
