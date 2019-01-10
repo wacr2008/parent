@@ -92,5 +92,16 @@ public class brandController {
 
     }
 
+    @RequestMapping("/updateStatus")
+    public Result updateStatus(String id,Integer status){
+
+        try {
+//            brandService.updateStatus(id, status);
+            return new Result(true, "审核成功!!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "审核失败!!");
+        }
+    }
 
 }
