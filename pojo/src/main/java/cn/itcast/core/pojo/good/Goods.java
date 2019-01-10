@@ -84,6 +84,19 @@ public class Goods implements Serializable {
      */
     private String isDelete;
 
+    /**
+     * 商品详情
+     */
+    private GoodsDesc goodsDesc;
+
+    public GoodsDesc getGoodsDesc() {
+        return goodsDesc;
+    }
+
+    public void setGoodsDesc(GoodsDesc goodsDesc) {
+        this.goodsDesc = goodsDesc;
+    }
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {

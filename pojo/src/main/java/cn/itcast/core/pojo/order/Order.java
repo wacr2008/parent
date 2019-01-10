@@ -3,6 +3,7 @@ package cn.itcast.core.pojo.order;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class Order implements Serializable {
     /**
@@ -129,6 +130,19 @@ public class Order implements Serializable {
      * 商家ID
      */
     private String sellerId;
+
+    /**
+     * 订单详情
+     */
+    private List<OrderItem> orderItem;
+
+    public List<OrderItem> getOrderItem() {
+        return orderItem;
+    }
+
+    public void setOrderItem(List<OrderItem> orderItem) {
+        this.orderItem = orderItem;
+    }
 
     private static final long serialVersionUID = 1L;
 

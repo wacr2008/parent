@@ -83,7 +83,7 @@ public class brandController {
     public PageResult search(@RequestBody Brand brand, Integer page , Integer rows){
         System.out.println(brand);
         System.out.println();
-         return  brandService.findPage(brand,page,rows);
+        return  brandService.findPage(brand,page,rows);
 
     }
     @RequestMapping("/selectOptionList")
