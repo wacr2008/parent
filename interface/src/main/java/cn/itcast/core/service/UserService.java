@@ -16,6 +16,6 @@ public interface UserService {
 
     void updateStatus(Long id, String status);
 
-    Boolean check(String username);
+    String check(String username);
 
 }

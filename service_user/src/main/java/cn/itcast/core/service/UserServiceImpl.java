@@ -2,6 +2,7 @@ package cn.itcast.core.service;
 
 import cn.itcast.core.dao.user.UserDao;
 import cn.itcast.core.pojo.entity.PageResult;
+import cn.itcast.core.pojo.entity.Result;
 import cn.itcast.core.pojo.user.User;
 import cn.itcast.core.pojo.user.UserQuery;
 import com.alibaba.dubbo.config.annotation.Service;
@@ -123,17 +124,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean check(String username) {
+    public String check(String username) {
         UserQuery userQuery=new UserQuery();
         UserQuery.Criteria criteria = userQuery.createCriteria();
         criteria.andUsernameEqualTo(username);
         List<User> users = userDao.selectByExample(userQuery);
+        String status="";
         for (User user : users) {
-            if ("N".equals(user.getStatus())){
-                return false;
-            }
+            status=user.getStatus();
+
         }
-        return true;
+        return status;
+
     }
 
 
