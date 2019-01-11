@@ -70,7 +70,9 @@ public class brandServiceImpl implements brandService {
             if (brand.getFirstChar()!=null  && brand.getFirstChar().length()>0){
                 criteria.andFirstCharEqualTo( brand.getFirstChar());
             }
-            criteria.andStatusEqualTo("0");
+            if (brand.getStatus()!=null&&!"".equals(brand.getStatus())){
+                criteria.andStatusEqualTo(brand.getStatus());
+            }
         }
 
         Page<Brand> brands = (Page<Brand>) brandDao.selectByExample(brandQuery);

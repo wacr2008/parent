@@ -14,4 +14,6 @@ public interface SpecificationService {
     void update(SpecEntity spec);
     void delete(Long[] ids);
     List<Map> selectOptionList();
+
+    void updateStatus(Long id, String status);
 }

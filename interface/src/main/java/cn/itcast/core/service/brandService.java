@@ -1,10 +1,10 @@
 package cn.itcast.core.service;
 
-import cn.itcast.core.pojo.entity.PageResult;
-import cn.itcast.core.pojo.good.Brand;
+        import cn.itcast.core.pojo.entity.PageResult;
+        import cn.itcast.core.pojo.good.Brand;
 
-import java.util.List;
-import java.util.Map;
+        import java.util.List;
+        import java.util.Map;
 
 public interface brandService {
     List<Brand> brandFindAll();
