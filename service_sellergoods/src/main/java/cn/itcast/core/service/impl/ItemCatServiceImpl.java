@@ -40,7 +40,6 @@ public class ItemCatServiceImpl implements ItemCatService {
 
     @Override
     public ItemCat findOne(Long id) {
-
         return itemCatDao.selectByPrimaryKey(id);
 
     }
@@ -48,11 +47,6 @@ public class ItemCatServiceImpl implements ItemCatService {
     @Override
     public List<ItemCat> findAll() {
         List<ItemCat> itemCats = itemCatDao.selectByExample(null);
-        System.out.println("----------");
-
-
-
-
         return itemCats;
     }
 }

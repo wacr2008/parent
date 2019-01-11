@@ -70,7 +70,7 @@ public class brandServiceImpl implements brandService {
             if (brand.getFirstChar()!=null  && brand.getFirstChar().length()>0){
                 criteria.andFirstCharEqualTo( brand.getFirstChar());
             }
-
+            criteria.andStatusEqualTo("0");
         }
 
         Page<Brand> brands = (Page<Brand>) brandDao.selectByExample(brandQuery);
@@ -78,8 +78,18 @@ public class brandServiceImpl implements brandService {
     }
 
     @Override
+    public void updateStatus(Long id, String status) {
+        //1. 修改品牌状态
+        Brand brand = new Brand();
+        brand.setId(id);
+        brand.setStatus(status);
+        brandDao.updateByPrimaryKeySelective(brand);
+    }
+
+    @Override
     public List<Map> selectOptionList() {
         return brandDao.selectOptionList();
 
     }
+
 }

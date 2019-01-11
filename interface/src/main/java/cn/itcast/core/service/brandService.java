@@ -14,6 +14,6 @@ public interface brandService {
     void update(Brand brand);
     void delete(Long[] ids);
     PageResult findPage(Brand brand, int pageNum,int pageSize);
-
+    void updateStatus(Long id,String status);
     List<Map> selectOptionList();
 }

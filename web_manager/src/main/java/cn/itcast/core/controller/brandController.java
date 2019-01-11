@@ -83,7 +83,7 @@ public class brandController {
     public PageResult search(@RequestBody Brand brand, Integer page , Integer rows){
         System.out.println(brand);
         System.out.println();
-         return  brandService.findPage(brand,page,rows);
+        return  brandService.findPage(brand,page,rows);
 
     }
     @RequestMapping("/selectOptionList")
@@ -92,5 +92,19 @@ public class brandController {
 
     }
 
+    @RequestMapping("/updateStatus")
+    public Result updateStatus(Long[] ids,String status){
+        try {
+            if (ids != null) {
+                for (Long id : ids) {
+                    brandService.updateStatus(id, status);
+                }
+            }
+            return new Result(true, "审核成功!!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "审核失败!!");
+        }
+    }
 
 }

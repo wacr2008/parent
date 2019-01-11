@@ -1,5 +1,7 @@
 package cn.itcast.core.service;
 
+import cn.itcast.core.pojo.entity.OrderEntity;
+import cn.itcast.core.pojo.entity.PageResult;
 import cn.itcast.core.pojo.log.PayLog;
 import cn.itcast.core.pojo.order.Order;
 
@@ -12,4 +14,7 @@ public interface OrderService {
     PayLog getPayLogByUserName(String userName);
 
     void updatePayStatus(String userName);
+
+    //分页查询
+    public PageResult search(OrderEntity orderEntity, Integer page, Integer rows);
 }
