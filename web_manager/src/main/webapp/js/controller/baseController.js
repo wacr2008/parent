@@ -14,6 +14,10 @@ app.controller("baseController",function($scope){
 		// $scope.findByPage($scope.paginationConf.currentPage,$scope.paginationConf.itemsPerPage);
 		$scope.search($scope.paginationConf.currentPage,$scope.paginationConf.itemsPerPage);
 	}
+
+	$scope.chaxunx = function(){
+		$scope.chaxun($scope.chaxunEntity);
+	}
 	
 	// 定义一个数组:
 	$scope.selectIds = [];

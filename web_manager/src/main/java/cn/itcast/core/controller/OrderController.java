@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/order")
 public class OrderController {
@@ -20,5 +22,9 @@ public class OrderController {
         return page1;
     }
 
+    @RequestMapping("/statistics")
+    public Map statistics() {
+        return orderService.statistics(null);
+    }
 
 }

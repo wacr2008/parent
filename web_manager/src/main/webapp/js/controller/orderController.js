@@ -76,5 +76,15 @@ app.controller('orderController' ,function($scope,$controller   ,orderService){
             }
         );
     }
+    $scope.chaxunEntity={};//定义查询对象
+
+    $scope.chaxun = function () {
+        orderService.chaxun(chaxunEntity).success(
+            function (response) {
+                $scope.datas=response.data;
+                $scope.counts=response.count;
+            }
+        )
+    }
 
 });	
