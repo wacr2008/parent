@@ -6,6 +6,7 @@
     <result column="option_name" property="optionName" jdbcType="VARCHAR" />
     <result column="spec_id" property="specId" jdbcType="BIGINT" />
     <result column="orders" property="orders" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -67,7 +68,7 @@
   </sql>
   <sql id="Base_Column_List" >
     <if test="fields == null" >
-      id, option_name, spec_id, orders
+      id, option_name, spec_id, orders, status
     </if>
     <if test="fields != null" >
       ${fields}
@@ -89,7 +90,7 @@
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
-    id,option_name,spec_id,orders
+    id,option_name,spec_id,orders,status
     from tb_specification_option
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -105,9 +106,9 @@
   </delete>
   <insert id="insert" parameterType="cn.itcast.core.pojo.specification.SpecificationOption" >
     insert into tb_specification_option (id, option_name, spec_id, 
-      orders)
+      orders, status)
     values (#{id,jdbcType=BIGINT}, #{optionName,jdbcType=VARCHAR}, #{specId,jdbcType=BIGINT}, 
-      #{orders,jdbcType=INTEGER})
+      #{orders,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="cn.itcast.core.pojo.specification.SpecificationOption" >
     insert into tb_specification_option
@@ -124,6 +125,9 @@
       <if test="orders != null" >
         orders,
       </if>
+      <if test="status != null" >
+        status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -137,6 +141,9 @@
       </if>
       <if test="orders != null" >
         #{orders,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -161,6 +168,9 @@
       <if test="record.orders != null" >
         orders = #{record.orders,jdbcType=INTEGER},
       </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -171,7 +181,8 @@
     set id = #{record.id,jdbcType=BIGINT},
       option_name = #{record.optionName,jdbcType=VARCHAR},
       spec_id = #{record.specId,jdbcType=BIGINT},
-      orders = #{record.orders,jdbcType=INTEGER}
+      orders = #{record.orders,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -188,6 +199,9 @@
       <if test="orders != null" >
         orders = #{orders,jdbcType=INTEGER},
       </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -195,7 +209,8 @@
     update tb_specification_option
     set option_name = #{optionName,jdbcType=VARCHAR},
       spec_id = #{specId,jdbcType=BIGINT},
-      orders = #{orders,jdbcType=INTEGER}
+      orders = #{orders,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
