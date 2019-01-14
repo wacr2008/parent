@@ -3,11 +3,6 @@ package cn.itcast.core.service;
 import cn.itcast.core.dao.user.UserDao;
 import cn.itcast.core.pojo.entity.PageResult;
 import cn.itcast.core.pojo.entity.Result;
-import cn.itcast.core.pojo.good.Brand;
-import cn.itcast.core.pojo.good.BrandQuery;
-import cn.itcast.core.pojo.good.Goods;
-import cn.itcast.core.pojo.item.Item;
-import cn.itcast.core.pojo.item.ItemQuery;
 import cn.itcast.core.pojo.user.User;
 import cn.itcast.core.pojo.user.UserQuery;
 import com.alibaba.dubbo.config.annotation.Service;
@@ -23,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
-import javax.sound.midi.Soundbank;
-import javax.xml.stream.XMLOutputFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +53,7 @@ public class UserServiceImpl implements UserService {
             @Override
             public Message createMessage(Session session) throws JMSException {
                 Map map = new HashMap<>();
+                //  map.put(, );
                 //  map.put(, );
 
                 return null;
@@ -130,17 +124,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean check(String username) {
+    public String check(String username) {
         UserQuery userQuery=new UserQuery();
         UserQuery.Criteria criteria = userQuery.createCriteria();
         criteria.andUsernameEqualTo(username);
         List<User> users = userDao.selectByExample(userQuery);
+        String status="";
         for (User user : users) {
-            if ("N".equals(user.getStatus())){
-                return false;
-            }
+            status=user.getStatus();
+
         }
-        return true;
+        return status;
+
     }
 
 
