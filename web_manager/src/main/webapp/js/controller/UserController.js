@@ -49,12 +49,13 @@ app.controller('userController' ,function($scope,$controller   ,userService){
 	}
 	
 	$scope.searchEntity={};//定义搜索对象 
-	
+    $scope.activeactivecount=0;
 	//搜索
 	$scope.search=function(page,rows){
         userService.search(page,rows,$scope.searchEntity).success(
 			function(response){
-
+				$scope.allUser=response.allUser;
+                $scope.activeactivecount=response.activecount;
 				$scope.list=response.rows;	
 				$scope.paginationConf.totalItems=response.total;//更新总记录数
 			}			
@@ -72,6 +73,7 @@ app.controller('userController' ,function($scope,$controller   ,userService){
             }
         });
     }
+
 
 
 

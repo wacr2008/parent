@@ -33,4 +33,8 @@ app.service('goodsService',function($http){
 	this.updateStatus = function(ids,status){
 		return $http.get('../goods/updateStatus.do?ids='+ids+"&status="+status);
 	}
+	//下载商品数据
+    this.downn = function(){
+        return $http.get('../goods/downn.do');
+    }
 });

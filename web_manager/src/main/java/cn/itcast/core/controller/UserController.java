@@ -17,9 +17,14 @@ public class UserController {
 
     @RequestMapping("/search")
     public PageResult search(@RequestBody User user, Integer page, Integer rows) {
-        System.out.println(user);
 
-        return userService.findPage(user, page, rows);
+
+        PageResult pageResult = userService.findPage(user, page, rows);
+        Integer count=userService.activeCount();
+        Integer integer = userService.countAll();
+        pageResult.setActivecount(count);
+        pageResult.setAllUser(integer);
+        return pageResult;
     }
 
     /**
@@ -44,4 +49,5 @@ public class UserController {
             return new Result(false, "状态修改失败!");
         }
     }
+
 }

@@ -28,7 +28,7 @@
 
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="userController" ng-init="searchEntity={}">
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="userController" ng-init="searchEntity={};">
   <!-- .box-body -->
                 <div class="box box-primary">
                     <div class="box-header with-border">
@@ -37,7 +37,9 @@
 
 
                     <div class="box-body">
-						用户总数量为{{ conf.totalItems }}
+						用户总数量为：{{allUser}}人，
+
+						活跃人数为：{{activeactivecount}}人
 
                         <!-- 数据表格 -->
                         <div class="table-box">

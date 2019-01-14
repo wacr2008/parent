@@ -17,4 +17,6 @@ public interface GoodsService {
 
     void updateStatus(Long id, String status);
 
+    void downGoods() throws Exception;
+
 }

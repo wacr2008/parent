@@ -10,6 +10,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -18,6 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,7 +107,7 @@ public class UserServiceImpl implements UserService {
             }
         }
         Page<User> users = (Page<User>) userDao.selectByExample(userQuery);
-        System.out.println(users.getResult());
+
         return new PageResult(users.getTotal(), users.getResult());
     }
 
@@ -138,7 +142,46 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * 从redis中获取活跃人数
+     * @return
+     */
+    @Override
+    public Integer activeCount() {
+        Integer dateFromRedis0= getDateFromRedis(0);
+        Integer dateFromRedis1 = getDateFromRedis(1);
+        Integer dateFromRedis2 =  getDateFromRedis(2);
+        if (dateFromRedis0==null){
+            dateFromRedis0=0;
+        }
+        if (dateFromRedis1==null){
+            dateFromRedis1=0;
+        }
+        if (dateFromRedis2==null){
+            dateFromRedis2=0;
+        }
 
+        System.out.println(dateFromRedis0+"----000000");
+        System.out.println(dateFromRedis1+"----111111");
+        System.out.println(dateFromRedis2+"----222222");
+        return dateFromRedis0+dateFromRedis1+dateFromRedis2;
+
+    }
+
+    @Override
+    public Integer countAll() {
+        return  userDao.selectAllCount();
+
+    }
+
+    /**
+     * 获取第i天前的活跃人数
+     * @param i 天数
+     * @return
+     */
+    private Integer getDateFromRedis(Integer i){
+        return (Integer) redisTemplate.boundHashOps(String.valueOf(LocalDate.now().plusDays(-i))).get("count");
+    }
 
     /**
      * 获取一个6位的随机数
@@ -154,4 +197,12 @@ public class UserServiceImpl implements UserService {
         }
         return result;
     }
+
+    public static void main(String[] args) {
+        LocalDate localDate = LocalDate.now().plusDays(-1);
+        System.out.println(localDate);
+
+    }
+
+
 }

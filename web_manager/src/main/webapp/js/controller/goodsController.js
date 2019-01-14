@@ -102,4 +102,20 @@ app.controller('goodsController' ,function($scope,$controller,itemCatService   ,
 			}
 		});
 	}
+
+    //商品数据下载
+    $scope.downn=function(){
+        //获取选中的复选框
+        goodsService.downn().success(
+            function(response){
+                if(response.success){
+                    //重新查询
+                    alert(response.message);
+                }else{
+                    alert(response.message);
+                }
+            }
+        );
+    }
+
 });	

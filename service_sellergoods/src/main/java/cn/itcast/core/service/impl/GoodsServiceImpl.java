@@ -17,6 +17,7 @@ import cn.itcast.core.pojo.item.ItemCat;
 import cn.itcast.core.pojo.item.ItemQuery;
 import cn.itcast.core.pojo.seller.Seller;
 import cn.itcast.core.service.GoodsService;
+import cn.itcast.core.util.ExportExcel;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
@@ -32,10 +33,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
@@ -123,6 +121,79 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
+    public void downGoods() throws Exception {
+    ItemQuery itemQuery=new ItemQuery();
+        List<Item> itemList = itemDao.selectByExample(itemQuery);
+
+        List<HashMap<String, Object>> listMap = new ArrayList<HashMap<String, Object>>();
+        String[] rowsName = new String[] { "商品编号", "商品标题", "商品卖点", "商品价格，单位为：元", "库存数量", "商品条形码", "商品图片", "所属类目，叶子类目", " 商品状态，1-正常，2-下架，3-删除",
+                "创建时间", "更新时间", "商品ID", "卖家ID", "商品分类", "商品品牌", "商品参数", "卖家",  "",
+                "" };
+        for (Item item : itemList) {
+            HashMap<String, Object> name = new HashMap<String, Object>();
+            // 第1行数据放入map集合 开始
+            name.put("serviceID", item.getId());
+            name.put("serviceName", item.getTitle());
+            name.put("fieldType", item.getSellPoint());
+            name.put("dataElementEncoding",item.getPrice());
+            name.put("chineseName", item.getNum());
+            name.put("englishName",item.getBarcode());
+            name.put("typeOfData", item.getImage());
+            name.put("jdataLength", item.getCategoryid());
+            name.put("jdataAccuracy",item.getStatus());
+            name.put("unit", item.getCreateTime());
+            name.put("businessRules", item.getGoodsId());
+            name.put("englishAbbreviations",item.getSellerId());
+            name.put("dataElementTypeField", item.getCategory());
+            name.put("dataStorageType", item.getBrand());
+            name.put("ydataLength", item.getSpec());
+            name.put("ydataAccuracy", item.getSeller());
+
+            // 第1行数据放入map集合结束
+            listMap.add(name);// 将第1个map集合放入listMap中
+        }
+
+
+
+
+
+
+        String title = "商品数据";
+
+        List<Object[]> dataList = new ArrayList<Object[]>();
+        Object[] objs = null;
+        for (int i = 0; i < listMap.size(); i++) {
+            HashMap<String, Object> data = listMap.get(i);// 获取5次
+            objs = new Object[rowsName.length];
+            objs[0] = data.get("serviceID");
+            objs[1] = data.get("serviceName");
+            objs[2] = data.get("fieldType");
+            objs[3] = data.get("dataElementEncoding");
+            objs[4] = data.get("chineseName");
+            objs[5] = data.get("englishName");
+            objs[6] = data.get("typeOfData");
+            objs[7] = data.get("jdataLength");
+            objs[8] = data.get("jdataAccuracy");
+            objs[9] = data.get("unit");
+            objs[10] = data.get("businessRules");
+            objs[11] = data.get("englishAbbreviations");
+            objs[12] = data.get("dataElementTypeField");
+            objs[13] = data.get("dataStorageType");
+            objs[14] = data.get("ydataLength");
+            objs[15] = data.get("ydataAccuracy");
+            dataList.add(objs);
+        }
+        ExportExcel ex = new ExportExcel(title, rowsName, dataList);
+        ex.export();
+
+
+
+
+
+
+    }
+
+    @Override
     public PageResult search(Goods goods, Integer page, Integer rows) {
         PageHelper.startPage(page, rows);
         GoodsQuery goodsQuery = new GoodsQuery();
@@ -140,7 +211,6 @@ public class GoodsServiceImpl implements GoodsService {
                 criteria.andSellerIdEqualTo(goods.getSellerId());
             }
         }
-
         Page<Goods> page1 = (Page<Goods>) goodsDao.selectByExample(goodsQuery);
         return new PageResult(page1.getTotal(), page1.getResult());
 

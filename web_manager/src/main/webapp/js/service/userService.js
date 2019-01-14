@@ -33,4 +33,6 @@ app.service('userService',function($http){
         return $http.get('../user/updateStatus.do?ids='+ids+"&status="+status);
     }
 
+
+
 });

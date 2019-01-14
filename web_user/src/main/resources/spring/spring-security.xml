@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
 	<http pattern="/css/**" security="none"></http>
 	<http pattern="/img/**" security="none"></http>
@@ -12,6 +14,13 @@
 	<http pattern="/register.html" security="none"></http>
 	<http pattern="/user/add.do" security="none"></http>
 	<http pattern="/user/sendCode.do" security="none"></http>
+
+    <dubbo:application name="pinyougou-user-web" />
+    <dubbo:registry address="zookeeper://192.168.200.128:2181"/>
+    <!-- 超时全局设置   10分钟   check=false不检查服务提供方-->
+    <dubbo:consumer timeout="600000" check="false"/>
+    <dubbo:reference  id="userActiveService" interface="cn.itcast.core.service.UserActiveService">
+    </dubbo:reference>
 	
 	<!--   entry-point-ref  入口点引用 -->
 	<http use-expressions="false" entry-point-ref="casProcessingFilterEntryPoint">  
@@ -62,7 +71,9 @@
         <beans:property name="key" value="an_id_for_this_auth_provider_only"/> 
     </beans:bean>        
    		 <!-- 认证类 -->
-	<beans:bean id="userDetailsService" class="cn.itcast.core.service.UserDetailServiceImpl"/>
+    <beans:bean id="userDetailsService" class="cn.itcast.core.service.UserDetailServiceImpl">
+        <beans:property name="userActiveService" ref="userActiveService"></beans:property>
+    </beans:bean>
 	
 	<!-- 认证过滤器 结束 -->
 	

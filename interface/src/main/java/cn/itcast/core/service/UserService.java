@@ -7,15 +7,18 @@ import cn.itcast.core.pojo.user.User;
 public interface UserService {
     public void sendCode(String phone);
 
-    public Boolean checkSmsCode(String phone , String smsCode);
+    public Boolean checkSmsCode(String phone, String smsCode);
 
-    public  void  add(User user);
-
+    public void add(User user);
 
     PageResult findPage(User user, Integer page, Integer rows);
 
     void updateStatus(Long id, String status);
 
     String check(String username);
+
+    Integer activeCount();
+
+    Integer countAll();
 
 }

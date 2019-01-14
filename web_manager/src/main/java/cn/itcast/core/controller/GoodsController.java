@@ -83,6 +83,19 @@ public class GoodsController {
             return new Result(false, "状态修改失败!");
         }
     }
+
+
+    @RequestMapping("/downn")
+    public Result downloadGoodS() {
+        try {
+             goodsService.downGoods();
+            return new Result(true, "下载成功!!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "删除失败!!，请在D盘目录下创建文件名为'data'的文件夹后再试!!!");
+        }
+    }
+
 /*@RequestMapping("/test")
     public String get(Long id){
         try {
