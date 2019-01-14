@@ -7,6 +7,7 @@ import cn.itcast.core.dao.order.OrderItemDao;
 import cn.itcast.core.dao.seller.SellerDao;
 import cn.itcast.core.pojo.entity.OrderEntity;
 import cn.itcast.core.pojo.entity.PageResult;
+import cn.itcast.core.pojo.entity.ZheXianTuEntity;
 import cn.itcast.core.pojo.good.Goods;
 import cn.itcast.core.pojo.good.GoodsDesc;
 import cn.itcast.core.pojo.good.GoodsQuery;
@@ -16,6 +17,7 @@ import cn.itcast.core.pojo.order.OrderItem;
 import cn.itcast.core.pojo.order.OrderItemQuery;
 import cn.itcast.core.pojo.order.OrderQuery;
 import cn.itcast.core.pojo.seller.Seller;
+import cn.itcast.core.pojo.seller.SellerQuery;
 import cn.itcast.core.service.OrderService;
 import cn.itcast.core.util.DateUtils;
 import com.alibaba.dubbo.config.annotation.Service;
@@ -24,9 +26,8 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 @Transactional
@@ -88,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
                 }
             }
             if (orderEntity.getDate() != null && !"".equals(orderEntity.getDate())) {
-
+                criteria.andCreateTimeEqualTo(orderEntity.getDate());
             }
         }
         Page<Order> page1 = (Page<Order>) orderDao.selectByExample(orderQuery);
@@ -118,6 +119,87 @@ public class OrderServiceImpl implements OrderService {
             list.add(order);
         }
         return new PageResult(page1.getTotal(), list);
+    }
+
+    @Override
+    public Map statistics(ZheXianTuEntity zheXianTuEntity) {
+        Map map = new HashMap();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        OrderQuery orderQuery = new OrderQuery();
+        OrderQuery.Criteria criteria = orderQuery.createCriteria();
+        //判断传入参数是否为空
+        if (zheXianTuEntity != null) {
+            //根据商家ID查
+            if (zheXianTuEntity.getSellerName() != null && !"".equals(zheXianTuEntity.getSellerName())) {
+                String sellerId = getSellerId(zheXianTuEntity.getSellerName());
+                criteria.andSellerIdEqualTo(sellerId);
+            }
+            List<Integer> integers = new ArrayList<>();
+            List<String> dates = new ArrayList<>();
+            //根据传入事假查
+            if (zheXianTuEntity.getDates() != null && zheXianTuEntity.getDates().length >= 2) {
+                Date startDate = zheXianTuEntity.getDates()[0];
+                Date entDate = zheXianTuEntity.getDates()[1];
+                Date tmpDate = new Date();
+                for (int i = 1; tmpDate == entDate; i++) {
+                    Date qian = getQian(startDate, i);
+                    tmpDate = qian;
+                    criteria.andPaymentTimeEqualTo(qian);
+                    int i1 = orderDao.countByExample(orderQuery);
+                    dates.add(sdf.format(qian));
+                    integers.add(i1);
+                }
+            }
+            map.put("data", dates);
+            map.put("count", integers);
+            return map;
+        }
+        List<Integer> integers = new ArrayList<>();
+        List<String> dates = new ArrayList<>();
+        Date date = new Date();
+        //没有时间传入则查取前一周的数据
+        for (int i = -6; i <= 0; i++) {
+            Date qian = getQian(date, i);
+            criteria.andPaymentTimeEqualTo(qian);
+            int i1 = orderDao.countByExample(orderQuery);
+            dates.add(sdf.format(qian));
+            integers.add(i1);
+        }
+        map.put("data", dates.toArray());
+        map.put("count", integers.toArray());
+        return map;
+    }
+
+    /**
+     * 根据商家名求商家ID
+     * @param sellerName
+     * @return
+     */
+    private String getSellerId(String sellerName) {
+        SellerQuery query = new SellerQuery();
+        SellerQuery.Criteria criteria = query.createCriteria();
+        criteria.andNameEqualTo(sellerName);
+        List<Seller> sellers = sellerDao.selectByExample(query);
+        if (sellers.size() > 1) {
+            String name = sellers.get(0).getName();
+            return name;
+        }
+        return null;
+    }
+
+    /**
+     * 根据传来的时间计算前几日和后日
+     * @param date
+     * @param i 传入正值求后几日
+     * @return
+     */
+    private Date getQian(Date date, int i) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_MONTH, i);
+        date = calendar.getTime();
+        return date;
     }
 
 }

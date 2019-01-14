@@ -30,7 +30,7 @@ public class SpecificationController {
      */
     @RequestMapping("/search")
     public PageResult search(@RequestBody Specification spec, Integer page , Integer rows ){
-       return specificationService.search(spec,page,rows);
+        return specificationService.search(spec,page,rows);
     }
     @RequestMapping("/add")
     public Result add(@RequestBody SpecEntity spec){
@@ -43,10 +43,10 @@ public class SpecificationController {
         }
     }
 
-  @RequestMapping("/findOne")
+    @RequestMapping("/findOne")
     public  SpecEntity findOne(Long id){
-       return specificationService.findOne(id);
-  }
+        return specificationService.findOne(id);
+    }
 
     @RequestMapping("/update")
     public  Result update(@RequestBody SpecEntity spec){
@@ -76,6 +76,20 @@ public class SpecificationController {
     }
 
 
+    @RequestMapping("/updateStatus")
+    public Result updateStatus(Long[] ids,String status){
+        try {
+            if (ids != null) {
+                for (Long id : ids) {
+                    specificationService.updateStatus(id, status);
+                }
+            }
+            return new Result(true, "审核成功!!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "审核失败!!");
+        }
+    }
 
 
 

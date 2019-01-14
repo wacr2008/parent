@@ -40,6 +40,9 @@ public class SpecificationServiceImpl implements SpecificationService {
             if (spec.getSpecName() !=null && !"".equals(spec.getSpecName())){
                 criteria.andSpecNameLike("%"+spec.getSpecName()+"%");
             }
+            if (spec.getStatus() != null && !"".equals(spec.getStatus())){
+                criteria.andStatusEqualTo(spec.getStatus());
+            }
         }
         Page<Specification> specificationPage=( Page<Specification>) specificationDao.selectByExample(specificationQuery);
         return new PageResult(specificationPage.getTotal(),specificationPage.getResult());
@@ -127,6 +130,24 @@ public class SpecificationServiceImpl implements SpecificationService {
     @Override
     public List<Map> selectOptionList() {
        return specificationDao.selectOptionList();
+    }
+
+    @Override
+    public void updateStatus(Long id, String status) {
+        //1. 修改规格状态
+        Specification specification = new Specification();
+        specification.setId(id);
+        specification.setStatus(status);
+        specificationDao.updateByPrimaryKeySelective(specification);
+        //2.修改规格选项状态
+        SpecificationOption specificationOption = new SpecificationOption();
+        specificationOption.setStatus(status);
+
+        SpecificationOptionQuery query = new SpecificationOptionQuery();
+        SpecificationOptionQuery.Criteria criteria = query.createCriteria();
+        criteria.andSpecIdEqualTo(id);
+        specificationOptionDao.updateByExampleSelective(specificationOption,query);
+
     }
 
 }

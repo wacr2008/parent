@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>订单管理</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- 引入angular的js -->
+    <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+    <!-- 引入分页相关的JS和CSS -->
+    <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
+    <link rel="stylesheet" type="text/css" href="../css/webbase.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/pages-seckillOrder.css"/>
+    <script type="text/javascript" src="../plugins/angularjs/pagination.js"></script>
+
+    <script type="text/javascript" src="../js/base_pagination.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/service/orderService.js"></script>
+    <script type="text/javascript" src="../js/controller/orderController.js"></script>
+    <script type="text/javascript" src="../js/echarts.min.js"></script>
+</head>
+
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="orderController"
+      ng-init="chaxunx()">
+<!-- .box-body -->
+
+<div class="box-header with-border">
+    <h3 class="box-title">订单审核</h3>
+</div>
+
+<div class="box-body">
+
+    <!-- 数据表格 -->
+    <div class="table-box">
+
+        <!--工具栏-->
+        <div class="pull-left">
+            <div class="form-group form-inline">
+                <div class="btn-group">
+                    <!--<button type="button" ng-click="dele()" class="btn btn-default" title="删除"><i-->
+                    <!--class="fa fa-trash-o"></i> 删除-->
+                    <!--</button>-->
+                    <!--&lt;!&ndash;<button type="button" ng-click="updateStatus('1')" class="btn btn-default" title="审核通过"><i-->
+                    <!--class="fa fa-check"></i> 审核通过-->
+                    <!--</button>&ndash;&gt;-->
+                    <!--<button type="button" ng-click="updateStatus('2')" class="btn btn-default" title="驳回"><i-->
+                    <!--class="fa fa-ban"></i> 驳回-->
+                    <!--</button>-->
+                    <p>{{datas}}<br>
+                        {{counts}}</p>
+                    <button type="button" class="btn btn-default" title="刷新"><i class="fa fa-refresh"></i> 刷新</button>
+                </div>
+            </div>
+        </div>
+        <div class="box-tools pull-right">
+            商家：<input ng-model="chaxunEntity.sellerName">
+            统计日期：<input ng-model="chaxunEntity.date[0]" class="date">-<input ng-model="chaxunEntity.date[1]">
+            <button class="btn btn-default" ng-click="chaxunx()">查询</button>
+        </div>
+        <br><br><br>
+        <!--工具栏/-->
+        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+        <div id="main" style="width: 600px;height:400px; margin: 0 auto;"></div>
+        <script type="text/javascript">
+
+
+            var shijainji = $scope.datas;
+            var shujuji = $scope.counts;
+
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('main'));
+            // 指定图表的配置项和数据
+            option = {
+                xAxis: {
+                    type: 'category',
+                    data: shijainji
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: shujuji,
+                    type: 'line'
+                }]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        </script>
+
+    </div>
+    <!-- /.box-body -->
+</div>
+
+</body>
+
+</html>

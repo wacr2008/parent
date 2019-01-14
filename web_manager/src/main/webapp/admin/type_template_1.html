@@ -23,16 +23,15 @@
     
     <script type="text/javascript" src="../js/base_pagination.js"></script>
     <script type="text/javascript" src="../js/controller/baseController.js"></script>
-    <script type="text/javascript" src="../js/controller/brandController.js"></script>
-    <script type="text/javascript" src="../js/service/brandService.js"></script>
-    <script type="text/javascript" src="../js/service/itemCatService.js"></script>
+    <script type="text/javascript" src="../js/controller/typeTemplateController.js"></script>
+    <script type="text/javascript" src="../js/service/typeTemplateService.js"></script>
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="brandController" ng-init="searchEntity={status:'0'}">
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="typeTemplateController" ng-init="searchEntity={status:'0'}">
   <!-- .box-body -->
                 
                     <div class="box-header with-border">
-                        <h3 class="box-title">品牌审核</h3>
+                        <h3 class="box-title">模板审核</h3>
   </div>
 
                     <div class="box-body">
@@ -53,7 +52,7 @@
                             </div>
                             <div class="box-tools pull-right">
                                 <div class="has-feedback">
-                                    品牌名称：<input type="text" ng-model="searchEntity.Name">
+                                    分类模板名称：<input type="text" ng-model="searchEntity.Name">
 									<button class="btn btn-default" ng-click="reloadList()">查询</button>
                                 </div>
                             </div>
@@ -66,10 +65,11 @@
 			                              <th class="" style="padding-right:0px">
 			                                  <input id="selall" type="checkbox" class="icheckbox_square-blue">
 			                              </th> 
-										  <th class="sorting_asc">品牌ID</th>
-									      <th class="sorting">品牌名称</th>
-									      <th class="sorting">品牌首字母</th>
-									      <th class="sorting">状态</th>									     						
+										  <th class="sorting_asc">模板ID</th>
+									      <th class="sorting">分类模板名称</th>
+									      <th class="sorting">关联规格</th>
+									      <th class="sorting">扩展属性</th>
+									      <th class="sorting">状态</th>
 					                      <th class="text-center">操作</th>
 			                          </tr>
 			                      </thead>
@@ -78,8 +78,10 @@
 			                              <td><input ng-click="updateSelection($event,entity.id)" type="checkbox"></td>			                              
 				                          <td>{{entity.id}}</td>
 									      <td>{{entity.name}}</td>
-                                          <td>{{entity.firstChar}}</td>
-		                                  <td>		                                  
+                                          <td>{{jsonToString(entity.brandIds,'text')}}</td>
+                                          <td>{{jsonToString(entity.specIds,'text')}}</td>
+                                          <td>{{jsonToString(entity.customAttributeItems,'text')}}</td>
+		                                  <td>
 		                                  	<span>
 		                                  		{{status[entity.status]}}
 		                                  	</span>

@@ -2,11 +2,14 @@ package cn.itcast.core.controller;
 
 import cn.itcast.core.pojo.entity.OrderEntity;
 import cn.itcast.core.pojo.entity.PageResult;
+import cn.itcast.core.pojo.entity.ZheXianTuEntity;
 import cn.itcast.core.service.OrderService;
 import com.alibaba.dubbo.config.annotation.Reference;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/order")
@@ -20,5 +23,9 @@ public class OrderController {
         return page1;
     }
 
+    @RequestMapping("/statistics")
+    public Map statistics(@RequestBody ZheXianTuEntity zheXianTuEntity) {
+        return orderService.statistics(zheXianTuEntity);
+    }
 
 }

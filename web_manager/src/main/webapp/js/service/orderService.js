@@ -33,4 +33,7 @@ app.service('orderService',function($http){
     this.search=function(page,rows,searchEntity){
         return $http.post('../order/search.do?page='+page+"&rows="+rows, searchEntity);
     }
+    this.chaxun=function(chaxunEntity){
+        return $http.post('../order/statistics.do',chaxunEntity);
+    }
 });
